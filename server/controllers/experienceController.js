@@ -1,14 +1,12 @@
 const { Experience } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const asyncWrapper = require("../middlewares/async-wrapper");
-const BaseError = require("../errors");
 
 const experiencesController = {
     getMyExperiences: asyncWrapper(async (req, res) => {
         const experiences = await Experience.find({});
         res.status(StatusCodes.OK).json({
             result: experiences,
-            status: "success",
             message: "experiences has loaded successfully",
         });
     }),
@@ -18,7 +16,6 @@ const experiencesController = {
         const experience = await Experience.findById(experienceId);
         res.status(StatusCodes.OK).json({
             result: experience,
-            status: "success",
             message: "experience has loaded successfully",
         });
     }),
@@ -31,7 +28,6 @@ const experiencesController = {
         );
         res.status(StatusCodes.OK).json({
             result: experience,
-            status: "success",
             message: "experience has updated successfully",
         });
     }),

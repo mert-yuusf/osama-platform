@@ -8,7 +8,6 @@ const skillsController = {
     const skills = await Skill.find({});
     res.status(StatusCodes.OK).json({
       result: skills,
-      status: "success",
       message: "skills has loaded successfully",
     });
   }),
