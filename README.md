@@ -1,2 +1,3 @@
-# osama-platform
-Osama - MERN Full stack web platform
+# propertyAPI
+
+property api using express js
