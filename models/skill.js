@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const Enum = require("../enums");
 const skillSchema = new mongoose.Schema(
     {
         title: {
@@ -14,11 +14,17 @@ const skillSchema = new mongoose.Schema(
             default: null,
         },
 
-        percent: {
-            type: Number,
-            min: [0, 'min value of percent is 0'],
-            max: [100, 'min value of percent is 100'],
+        level: {
+            type: String,
             required: [true, 'Please provide percent value'],
+            enum: {
+                values: [
+                    Enum.SkillLevel.Beginner,
+                    Enum.SkillLevel.Intermediate,
+                    Enum.SkillLevel.Expert,
+                ],
+                message: "{VALUE} dose not supported as skill"
+            }
         },
 
         user: {

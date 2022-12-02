@@ -23,9 +23,10 @@ app.use('/api', authRoutes);
 app.use('/api', userRoutes);
 app.use('/api', skillRoutes);
 app.use('/api', experienceRoutes);
+app.use('/api', jobsRoutes);
 
-app.get('/', (req, res) => {
-    res.status(200).send('Index route');
+app.get('/is-running', async (req, res) => {
+    res.status(200).json({ index: "👉 API is running" });
 });
 
 // CUSTOM MIDDLEWARES

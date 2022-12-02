@@ -23,15 +23,7 @@ const userSchema = new mongoose.Schema(
 
         avatar: {
             type: String,
-            default: gravatar.url(
-                this.email,
-                {
-                    s: '100',
-                    r: 'x',
-                    d: 'retro',
-                },
-                false
-            ),
+            default: null
         },
 
         password: {
@@ -51,6 +43,30 @@ const userSchema = new mongoose.Schema(
             default: null,
         },
 
+        position: {
+            type: String,
+            default: null,
+        },
+
+        gender: {
+            type: String,
+            enum: {
+                values: ["male", "female"]
+            }
+        },
+        role: {
+            type: String,
+            enum: {
+                values: [
+                    Enum.UserRoles.Admin,
+                    Enum.UserRoles.Company,
+                    Enum.UserRoles.Freelancer
+                ],
+                message: '{VALUE} is not supported value',
+            },
+            default: Enum.UserRoles.Freelancer,
+        },
+
         address: {
             type: {
                 type: String,
@@ -61,24 +77,6 @@ const userSchema = new mongoose.Schema(
             state: String,
             city: String,
             zipCode: String,
-        },
-
-        role: {
-            type: String,
-            enum: {
-                values: [
-                    Enum.UserRoles.Admin,
-                    Enum.UserRoles.Company,
-                    Enum.UserRoles.Company
-                ],
-                message: '{VALUE} is not supported value',
-            },
-            default: Enum.UserRoles.Freelancer,
-        },
-
-        position: {
-            type: String,
-            default: null,
         },
 
         social: {
@@ -136,12 +134,17 @@ const userSchema = new mongoose.Schema(
 userSchema.pre('save', async function (next) {
     // check if the provided password is valid like defined in schema
     if (!this.isModified('password')) return;
-
     // hash password
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
+
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("avatar")) return;
+    this.avatar = `https://ui-avatars.com/api/?name=${this.fullName}&background=random`
+    next();
+})
 
 userSchema.methods.comparePassword = async function (providedPassword) {
     return await bcrypt.compare(providedPassword, this.password);

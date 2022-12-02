@@ -9,6 +9,6 @@ jobsRoutes.use(authenticateUser);
 
 jobsRoutes.route("/jobs")
     .get(jobController.getAll)
-    .post(jobController.createJob)
+    .post(authorizePermissions("company"), jobController.createJob)
 
 module.exports = jobsRoutes;

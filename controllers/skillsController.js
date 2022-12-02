@@ -1,11 +1,10 @@
 const { Skill } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const asyncWrapper = require("../middlewares/async-wrapper");
-const BaseError = require("../errors");
 
 const skillsController = {
   getMySkills: asyncWrapper(async (req, res) => {
-    const skills = await Skill.find({});
+    const skills = await Skill.find({ user: req.currentUserId });
     res.status(StatusCodes.OK).json({
       result: skills,
       message: "skills has loaded successfully",
@@ -21,13 +20,16 @@ const skillsController = {
       message: "skill has loaded successfully",
     });
   }),
+
   updateSkill: asyncWrapper(async (req, res) => {
     const { skillId } = req.params;
+    console.log(req.body);
     const skill = await Skill.findByIdAndUpdate(
       { _id: skillId },
       { ...req.body },
       { new: true }
     );
+    console.log(skill);
     res.status(StatusCodes.OK).json({
       result: skill,
       status: "success",
@@ -44,6 +46,7 @@ const skillsController = {
       message: "skill has deleted successfully",
     });
   }),
+
   createOne: asyncWrapper(async (req, res) => {
     const skill = await Skill.create({
       ...req.body,
