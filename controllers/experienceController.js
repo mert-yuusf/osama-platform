@@ -19,6 +19,7 @@ const experiencesController = {
             message: "experience has loaded successfully",
         });
     }),
+
     updateExperience: asyncWrapper(async (req, res) => {
         const { experienceId } = req.params;
         const experience = await Experience.findByIdAndUpdate(
@@ -43,6 +44,7 @@ const experiencesController = {
             message: "Experience has deleted successfully",
         });
     }),
+
     createOne: asyncWrapper(async (req, res) => {
         const experience = await Experience.create({
             ...req.body,

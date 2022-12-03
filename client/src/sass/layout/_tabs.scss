@@ -1,0 +1,19 @@
+.nav-pills {
+  .nav-item {
+    border-radius: 0 !important;
+    .nav-link {
+      border-radius: 0 !important;
+      border-bottom: 5px solid $secondary !important;
+      padding: 1.5rem !important;
+      color: $secondary !important;
+      &.active {
+        border-bottom: 5px solid $success !important;
+        background-color: $light !important;
+        color: $dark !important;
+        border-radius: 0 !important;
+        color: $dark !important;
+        font-weight: bolder !important;
+      }
+    }
+  }
+}

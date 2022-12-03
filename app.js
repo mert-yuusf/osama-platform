@@ -28,7 +28,11 @@ app.use('/api', jobsRoutes);
 app.get('/is-running', async (req, res) => {
     res.status(200).json({ index: "👉 API is running" });
 });
-
+if (process.env.NODE_ENV === 'production') {
+    //*Set static folder up in production
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')));
+}
 // CUSTOM MIDDLEWARES
 const Error_Handler_Middleware = require('./middlewares/error-handler');
 const Not_Found_Middleware = require('./middlewares/not-found-middleware');

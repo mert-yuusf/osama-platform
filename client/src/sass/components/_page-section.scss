@@ -1,0 +1,31 @@
+.page-section {
+  background-color: $light !important;
+
+  .section-header {
+    padding: 2rem 0 !important;
+  }
+
+  .section-label {
+    position: relative;
+  }
+  .section-label::before {
+    content: '';
+    position: absolute;
+    background-color: $secondary;
+    left: 0;
+    top: 50%;
+    width: 40%;
+    height: 5px;
+    transform: translateY(-50%);
+  }
+  .section-label::after {
+    content: '';
+    position: absolute;
+    background-color: $secondary;
+    right: 0;
+    top: 50%;
+    width: 40%;
+    height: 5px;
+    transform: translateY(-50%);
+  }
+}

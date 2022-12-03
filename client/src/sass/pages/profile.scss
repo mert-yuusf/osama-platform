@@ -1,0 +1,8 @@
+@import "../base/variables";
+
+.img-field-preview {
+    border: 3px dashed $secondary !important;
+    display: block;
+    margin: 0 auto;
+    width: 9rem !important;
+}
