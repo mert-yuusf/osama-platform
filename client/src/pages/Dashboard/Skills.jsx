@@ -3,8 +3,7 @@ import React from 'react';
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAllSkills, createSkill, updateSkill, cancelEditing } from "../../features/skillSlice";
-import SkillCard from "../../components/SkillCard";
+import { getAllSkills, createSkill, updateSkill, cancelEditing, removeSkill, getOneSkill } from "../../features/skillSlice";
 const skillsLevels = { beginner: "beginner", intermediate: "intermediate", expert: "expert" }
 
 
@@ -23,7 +22,14 @@ function Skills() {
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value })
     }
+    const handleRemove = async (skill) => {
+        await dispatch(removeSkill(skill?._id));
+        await dispatch(getAllSkills())
+    }
 
+    const handleEdit = async (skill) => {
+        await dispatch(getOneSkill(skill?._id));
+    }
     const onFormSubmit = async (e) => {
         e.preventDefault();
         if (selectedSkill) {
@@ -59,7 +65,9 @@ function Skills() {
 
     useEffect(() => {
         dispatch(getAllSkills())
-    }, [])
+    }, [dispatch])
+
+
     if (isLoading) {
         return <>
             Loading...
@@ -149,15 +157,53 @@ function Skills() {
             </div>
 
 
-            <div className="row row-cols-md-3 row-cols-lg-3  mt-4">
-                {
-                    !isLoading &&
-                    skills?.map((skill, index) => {
-                        return <div key={index} className="col-12 col-md-4 col-lg-4 p-3 skill-card-container">
-                            <SkillCard skill={skill} ></SkillCard>
-                        </div>
-                    })
-                }
+            <div className="row mt-4">
+                <div className="col-12 col-md-10 mx-auto">
+                    {
+                        !isLoading &&
+
+                        <>
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Level</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        skills.map((skill, index) => {
+                                            return <tr key={index}>
+                                                <th scope="row">{index + 1}</th>
+                                                <td>{skill.title}</td>
+                                                <td>{skill.level}</td>
+                                                <td>{skill.description}</td>
+                                                <td>
+                                                    <button
+                                                        className="btn btn-dark border-4 btn-sm border-dark rounded-0 me-2"
+                                                        onClick={() => { handleEdit(skill) }}
+                                                    >
+                                                        edit
+                                                    </button>
+
+                                                    <button
+                                                        className="btn btn-outline-dark border-4 btn-sm border-dark rounded-0"
+                                                        onClick={() => { handleRemove(skill) }}
+                                                    >
+                                                        delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </>
+                    }
+                </div>
             </div>
         </div>
     </>);
