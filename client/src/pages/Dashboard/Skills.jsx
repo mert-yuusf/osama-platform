@@ -53,11 +53,13 @@ function Skills() {
                 user: user._id,
             })
         }
-        return async () => {
-            await dispatch(getAllSkills());
-        }
-    }, [isLoading, selectedSkill, dispatch, user._id])
 
+    }, [selectedSkill, user._id,])
+
+
+    useEffect(() => {
+        dispatch(getAllSkills())
+    }, [])
     if (isLoading) {
         return <>
             Loading...

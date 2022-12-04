@@ -23,12 +23,6 @@ function Profile() {
         setUserInfo({ ...userInfo, [e.target.name]: e.target.value })
     }
 
-    // const onFileChange = (e) => {
-    //     e.preventDefault();
-    //     const url = URL.createObjectURL(e.target.files[0]);
-    //     setUserInfo({ ...userInfo, avatar: url });
-    // }
-
     const onFormSubmit = (e) => {
         e.preventDefault();
         dispatch(updateProfile(userInfo))
