@@ -15,7 +15,6 @@ function SkillCard({ skill }) {
         await dispatch(getOneSkill(skill?._id));
     }
 
-
     return (<>
         <div className="skill-card rounded-0 card">
             <div className="card-header d-flex align-items-center justify-content-between">
