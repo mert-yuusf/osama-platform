@@ -20,6 +20,7 @@ import ErrorPage from "./pages/Error";
 import axiosInstance from "./utils/axios";
 import { useEffect } from "react";
 import Address from "./pages/Dashboard/Address";
+import Toast from './components/Toast';
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
       <BrowserRouter>
         <Navbar></Navbar>
         <Alert></Alert>
+        <Toast></Toast>
         <Routes>
           <Route index path="/" element={<Home></Home>}></Route>
           <Route path="/get-started" element={<RegisterPage></RegisterPage>}></Route>

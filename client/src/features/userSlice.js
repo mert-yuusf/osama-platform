@@ -8,11 +8,13 @@ import {
     getUserFromLocalStorage
 } from "../utils/localStorage";
 import { displayAlert, removeAlert } from "./alertSlice";
+import { showToast } from "./toastSlice";
 
 const initialState = {
     isLoading: false,
     user: getUserFromLocalStorage(),
-    token: null
+    token: null,
+    isAuthenticated: false
 }
 
 export const registerUser = createAsyncThunk(
@@ -29,6 +31,7 @@ export const registerUser = createAsyncThunk(
             return { result }
         } catch (error) {
             const { message } = error.response.data;
+            thunkAPI.dispatch(displayAlert({ message: message, type: "danger" }))
             thunkAPI.dispatch(displayAlert({ message: message, type: "danger" }))
             setTimeout(() => {
                 thunkAPI.dispatch(removeAlert())
@@ -129,9 +132,12 @@ const userSlice = createSlice({
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.token = action.payload;
+            state.isAuthenticated = true;
         });
         builder.addCase(registerUser.rejected, (state) => {
             state.isLoading = false;
+            state.token = null;
+            state.isAuthenticated = false;
         });
 
         // login
@@ -142,7 +148,8 @@ const userSlice = createSlice({
             state.isLoading = false;
             const { result } = action.payload;
             if (result) {
-                state.token = action.payload.result
+                state.token = action.payload.result;
+                state.isAuthenticated = true;
             }
 
         });

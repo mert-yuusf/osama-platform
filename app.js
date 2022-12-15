@@ -18,12 +18,14 @@ const userRoutes = require('./routes/userRoutes');
 const skillRoutes = require('./routes/skillRoutes');
 const experienceRoutes = require('./routes/experienceRoutes');
 const jobsRoutes = require('./routes/jobRoutes');
+const utilsRoutes = require('./routes/utilsRoutes');
 
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
 app.use('/api', skillRoutes);
 app.use('/api', experienceRoutes);
 app.use('/api', jobsRoutes);
+app.use('/api', utilsRoutes);
 
 app.get('/is-running', async (req, res) => {
     res.status(200).json({ index: "👉 API is running" });
