@@ -27,13 +27,25 @@ const usersController = {
             { new: true }
         );
 
-        console.log('req.currentUserId', req.currentUserId);
         res.status(StatusCodes.OK).json({
             result: profile,
             status: 'success',
             message: 'account has loaded successfully',
         });
     }),
+
+    uploadPhoto: asyncWrapper(async (req, res) => {
+        const profile = await User.findByIdAndUpdate(
+            { _id: req.currentUserId },
+            { avatar: `${req.protocol}://${req.get('host')}/${req.media[0].replace("public/", "")}` },
+            { new: true }
+        );
+        res.status(StatusCodes.OK).json({
+            result: profile,
+            status: 'success',
+            message: 'account has loaded successfully',
+        });
+    })
 };
 
 module.exports = usersController;

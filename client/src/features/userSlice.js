@@ -8,14 +8,15 @@ import {
     getUserFromLocalStorage
 } from "../utils/localStorage";
 import { displayAlert, removeAlert } from "./alertSlice";
-import { showToast } from "./toastSlice";
+
 
 const initialState = {
     isLoading: false,
     user: getUserFromLocalStorage(),
     token: null,
-    isAuthenticated: false
+    isAuthenticated: false,
 }
+
 
 export const registerUser = createAsyncThunk(
     "user/register",
@@ -122,6 +123,11 @@ const userSlice = createSlice({
             state.token = null;
             state.user = null;
             clearLocalStorage();
+        },
+
+        updateValues: (state, action) => {
+            const { name, value } = action.payload;
+            Object.assign(state.user, { [name]: value })
         }
     },
     extraReducers: (builder) => {
@@ -183,5 +189,5 @@ const userSlice = createSlice({
     }
 })
 
-export const { logoutUser } = userSlice.actions;
+export const { logoutUser, updateValues } = userSlice.actions;
 export default userSlice.reducer;

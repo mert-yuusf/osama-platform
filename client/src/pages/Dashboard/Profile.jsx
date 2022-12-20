@@ -2,30 +2,35 @@ import React from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { updateProfile } from "../../features/userSlice";
+import { updateProfile, updateValues } from "../../features/userSlice";
+import { useRef } from 'react';
 
 const genderOptions = { male: "Male", female: "Female" }
 
 function Profile() {
     const { user } = useSelector((store) => store.user);
+    const [photo, setPhoto] = useState({ preview: user.avatar, data: null });
     const dispatch = useDispatch();
 
-    const [userInfo, setUserInfo] = useState({
-        fullName: user?.fullName || "",
-        email: user?.email || "",
-        avatar: user?.avatar || "",
-        position: user?.position || "",
-        bio: user?.bio || "",
-        gender: user?.gender || "",
-    });
+    const inputField = useRef(null);
 
-    const handleChange = (e) => {
-        setUserInfo({ ...userInfo, [e.target.name]: e.target.value })
+    const openFileDialog = (e) => {
+        inputField.current.click();
+    }
+
+    const onPhotoUpload = async (e) => {
+        const photoObj = {
+            preview: URL.createObjectURL(e.target.files[0]),
+            data: e.target.files[0]
+        }
+        setPhoto(photoObj)
+        console.log(photoObj.data);
     }
 
     const onFormSubmit = (e) => {
         e.preventDefault();
-        dispatch(updateProfile(userInfo))
+        // const formData = new FormData(this);
+        dispatch(updateProfile(user))
     }
 
 
@@ -43,7 +48,18 @@ function Profile() {
                             <div className="row row-cols-md-2 row-cols-lg-2">
                                 <div className="col-12 col-md-8 py-3 mx-auto">
                                     <div className="d-flex mb-3">
-                                        <img src={userInfo.avatar} alt="profile" className="img-fluid img-field-preview" />
+                                        <img src={photo.preview} alt="profile" className="img-fluid img-field-preview" />
+
+                                        <input
+                                            type="file"
+                                            name="photo"
+                                            id="photoField"
+                                            onChange={onPhotoUpload}
+                                            ref={inputField}
+                                            hidden
+                                        />
+                                        <p className='btn btn-primary my-auto'
+                                            onClick={openFileDialog}>Upload</p>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label htmlFor="fullName" className="form-label">Full Name</label>
@@ -52,8 +68,10 @@ function Profile() {
                                             name="fullName"
                                             id="fullName"
                                             className="form-control rounded-0"
-                                            value={userInfo.fullName}
-                                            onChange={handleChange}
+                                            value={user.fullName}
+                                            onChange={(e) => {
+                                                dispatch(updateValues({ name: e.target.name, value: e.target.value }))
+                                            }}
                                         />
                                     </div>
 
@@ -64,8 +82,10 @@ function Profile() {
                                             name="email"
                                             id="email"
                                             className="form-control rounded-0"
-                                            value={userInfo.email}
-                                            onChange={handleChange}
+                                            value={user.email}
+                                            onChange={(e) => {
+                                                dispatch(updateValues({ name: e.target.name, value: e.target.value }))
+                                            }}
                                         />
                                     </div>
 
@@ -76,8 +96,10 @@ function Profile() {
                                             name="position"
                                             id="positionField"
                                             className="form-control rounded-0"
-                                            value={userInfo.position}
-                                            onChange={handleChange}
+                                            value={user.position}
+                                            onChange={(e) => {
+                                                dispatch(updateValues({ name: e.target.name, value: e.target.value }))
+                                            }}
                                         />
                                     </div>
 
@@ -89,8 +111,10 @@ function Profile() {
                                                     name="gender"
                                                     id="genderField"
                                                     className="form-select rounded-0"
-                                                    onChange={handleChange}
-                                                    value={userInfo.gender}
+                                                    onChange={(e) => {
+                                                        dispatch(updateValues({ name: e.target.name, value: e.target.value }))
+                                                    }}
+                                                    value={user.gender}
                                                 >
                                                     <option value="*" defaultValue="Gender">Gender</option>
                                                     {

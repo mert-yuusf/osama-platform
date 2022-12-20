@@ -6,7 +6,6 @@ const asyncWrapper = require('../middlewares/async-wrapper');
 
 const utilsController = {
     uploadMedia: asyncWrapper(async (req, res) => {
-        console.log(req.file);
         res.json({ state: "Upload Media" })
     })
 }

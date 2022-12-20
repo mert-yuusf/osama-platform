@@ -36,7 +36,6 @@ function App() {
       <BrowserRouter>
         <Navbar></Navbar>
         <Alert></Alert>
-        <Toast></Toast>
         <Routes>
           <Route index path="/" element={<Home></Home>}></Route>
           <Route path="/get-started" element={<RegisterPage></RegisterPage>}></Route>
